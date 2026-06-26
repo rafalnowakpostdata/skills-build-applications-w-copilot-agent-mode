@@ -15,12 +15,18 @@ function inferCodespaceName() {
   return ''
 }
 
-function buildApiUrl(endpointPath) {
-  const configuredCodespace = import.meta.env.VITE_CODESPACE_NAME?.trim()
-  const inferredCodespace = inferCodespaceName()
-  const codespaceName = configuredCodespace || inferredCodespace
+function buildApiUrl(preferredEndpoint, endpointPath) {
+  if (preferredEndpoint) {
+    return {
+      configured: true,
+      endpoint: preferredEndpoint,
+      source: 'env',
+    }
+  }
 
-  if (!codespaceName) {
+  const inferredCodespace = inferCodespaceName()
+
+  if (!inferredCodespace) {
     return {
       configured: false,
       endpoint: '',
@@ -30,8 +36,8 @@ function buildApiUrl(endpointPath) {
 
   return {
     configured: true,
-    endpoint: `https://${codespaceName}-8000.app.github.dev${endpointPath}`,
-    source: configuredCodespace ? 'env' : 'inferred',
+    endpoint: `https://${inferredCodespace}-8000.app.github.dev${endpointPath}`,
+    source: 'inferred',
   }
 }
 
@@ -112,8 +118,8 @@ function ResourceTable({ items }) {
   )
 }
 
-export default function ResourcePage({ title, endpointPath, description }) {
-  const [{ configured, endpoint, source }] = useState(() => buildApiUrl(endpointPath))
+export default function ResourcePage({ title, endpointPath, preferredEndpoint, description }) {
+  const [{ configured, endpoint, source }] = useState(() => buildApiUrl(preferredEndpoint, endpointPath))
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(configured)
   const [error, setError] = useState('')
