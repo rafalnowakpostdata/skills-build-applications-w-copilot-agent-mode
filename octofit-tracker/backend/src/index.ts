@@ -1,14 +1,13 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import { User } from './models/user';
 import { Team } from './models/team';
 import { Activity } from './models/activity';
 import { Leaderboard } from './models/leaderboard';
 import { Workout } from './models/workout';
+import { connectToDatabase } from './database';
 
 const app = express();
 const port = Number(process.env.PORT) || 8000;
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 
 const getApiBaseUrl = () => {
   const codespaceName = process.env.CODESPACE_NAME;
@@ -61,7 +60,7 @@ app.get('/api', (_req, res) => {
 
 const startServer = async () => {
   try {
-    await mongoose.connect(mongoUri);
+    await connectToDatabase();
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection failed, continuing without database', error);

@@ -4,15 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mongoose_1 = __importDefault(require("mongoose"));
 const user_1 = require("./models/user");
 const team_1 = require("./models/team");
 const activity_1 = require("./models/activity");
 const leaderboard_1 = require("./models/leaderboard");
 const workout_1 = require("./models/workout");
+const database_1 = require("./database");
 const app = (0, express_1.default)();
 const port = Number(process.env.PORT) || 8000;
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 const getApiBaseUrl = () => {
     const codespaceName = process.env.CODESPACE_NAME;
     return codespaceName
@@ -55,7 +54,7 @@ app.get('/api', (_req, res) => {
 });
 const startServer = async () => {
     try {
-        await mongoose_1.default.connect(mongoUri);
+        await (0, database_1.connectToDatabase)();
         console.log('Connected to MongoDB');
     }
     catch (error) {

@@ -9,10 +9,10 @@ const team_1 = require("../models/team");
 const activity_1 = require("../models/activity");
 const leaderboard_1 = require("../models/leaderboard");
 const workout_1 = require("../models/workout");
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
+const database_1 = require("../database");
 async function seedDatabase() {
     console.log('Seed the octofit_db database with test data');
-    await mongoose_1.default.connect(mongoUri);
+    await mongoose_1.default.connect(database_1.mongoUri);
     await user_1.User.deleteMany({});
     await team_1.Team.deleteMany({});
     await activity_1.Activity.deleteMany({});

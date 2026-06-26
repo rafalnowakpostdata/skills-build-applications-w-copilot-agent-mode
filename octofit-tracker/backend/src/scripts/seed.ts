@@ -4,8 +4,7 @@ import { Team } from '../models/team';
 import { Activity } from '../models/activity';
 import { Leaderboard } from '../models/leaderboard';
 import { Workout } from '../models/workout';
-
-const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
+import { mongoUri } from '../database';
 
 async function seedDatabase() {
   console.log('Seed the octofit_db database with test data');
