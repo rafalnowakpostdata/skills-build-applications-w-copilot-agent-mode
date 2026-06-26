@@ -1,4 +1,5 @@
 import express from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { User } from './models/user';
 import { Team } from './models/team';
 import { Activity } from './models/activity';
@@ -17,6 +18,19 @@ const getApiBaseUrl = () => {
 };
 
 app.use(express.json());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(204);
+    return;
+  }
+
+  next();
+});
 
 app.get(['/api/users', '/api/users/'], async (_req, res) => {
   const users = await User.find({}).lean();
