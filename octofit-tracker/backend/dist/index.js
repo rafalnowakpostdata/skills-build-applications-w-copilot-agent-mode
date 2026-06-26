@@ -9,14 +9,14 @@ const team_1 = require("./models/team");
 const activity_1 = require("./models/activity");
 const leaderboard_1 = require("./models/leaderboard");
 const workout_1 = require("./models/workout");
-const database_1 = require("./database");
+const database_1 = require("./config/database");
 const app = (0, express_1.default)();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
 const getApiBaseUrl = () => {
     const codespaceName = process.env.CODESPACE_NAME;
     return codespaceName
         ? `https://${codespaceName}-8000.app.github.dev`
-        : `http://localhost:${port}`;
+        : 'http://localhost:8000';
 };
 app.use(express_1.default.json());
 app.get(['/api/users', '/api/users/'], async (_req, res) => {

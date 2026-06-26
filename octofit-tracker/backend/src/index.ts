@@ -7,13 +7,13 @@ import { Workout } from './models/workout';
 import { connectToDatabase } from './config/database';
 
 const app = express();
-const port = Number(process.env.PORT) || 8000;
+const port = 8000;
 
 const getApiBaseUrl = () => {
   const codespaceName = process.env.CODESPACE_NAME;
   return codespaceName
     ? `https://${codespaceName}-8000.app.github.dev`
-    : `http://localhost:${port}`;
+    : 'http://localhost:8000';
 };
 
 app.use(express.json());
