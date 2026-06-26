@@ -15,7 +15,7 @@ function inferCodespaceName() {
   return ''
 }
 
-function buildApiUrl(resource) {
+function buildApiUrl(endpointPath) {
   const configuredCodespace = import.meta.env.VITE_CODESPACE_NAME?.trim()
   const inferredCodespace = inferCodespaceName()
   const codespaceName = configuredCodespace || inferredCodespace
@@ -30,7 +30,7 @@ function buildApiUrl(resource) {
 
   return {
     configured: true,
-    endpoint: `https://${codespaceName}-8000.app.github.dev/api/${resource}/`,
+    endpoint: `https://${codespaceName}-8000.app.github.dev${endpointPath}`,
     source: configuredCodespace ? 'env' : 'inferred',
   }
 }
@@ -112,8 +112,8 @@ function ResourceTable({ items }) {
   )
 }
 
-export default function ResourcePage({ title, resource, description }) {
-  const [{ configured, endpoint, source }] = useState(() => buildApiUrl(resource))
+export default function ResourcePage({ title, endpointPath, description }) {
+  const [{ configured, endpoint, source }] = useState(() => buildApiUrl(endpointPath))
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(configured)
   const [error, setError] = useState('')
@@ -167,7 +167,7 @@ export default function ResourcePage({ title, resource, description }) {
           <p className="text-muted mb-0">{description}</p>
         </div>
         <div className="text-md-end">
-          <span className="badge text-bg-light border text-body-secondary">Endpoint: /api/{resource}/</span>
+          <span className="badge text-bg-light border text-body-secondary">Endpoint: {endpointPath}</span>
           {source === 'inferred' ? (
             <p className="small text-muted mt-2 mb-0">Using a codespace name inferred from the current host.</p>
           ) : null}
