@@ -4,7 +4,7 @@ import { Team } from '../models/team';
 import { Activity } from '../models/activity';
 import { Leaderboard } from '../models/leaderboard';
 import { Workout } from '../models/workout';
-import { mongoUri } from '../database';
+import { mongoUri } from '../config/database';
 
 async function seedDatabase() {
   console.log('Seed the octofit_db database with test data');
